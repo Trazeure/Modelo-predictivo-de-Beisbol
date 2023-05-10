@@ -1,0 +1,203 @@
+<!DOCTYPE>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta nameviewport content="width=device-width, initial-scale=1.0">
+    <title>Predicción de estadísticas deportivas</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            background-image: url('ruta/de/la/imagen.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            background-color: #313030;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 50px auto;
+            max-width: 600px;
+        }
+
+        .sport-option {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #fffdfd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sport-option:hover {
+            background-color: #fdfbfb;
+            transform: scale(1.1);
+        }
+
+        .sport-option i {
+            font-size: 48px;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #predictions {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #predictions th, #predictions td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        #predictions th {
+            background-color: #313030;
+            color: #fff;
+        }
+
+        .animate__animated {
+            animation-duration: 1s;
+            animation-fill-mode: both;
+        }
+
+        .animate__bounceIn {
+            animation-name: bounceIn;
+        }
+
+        .animate__fadeIn {
+            animation-name: fadeIn;
+        }
+
+        #sport-animation {
+            margin-top: 20px;
+            width: 200px;
+            height: 200px;
+            background-image: url('animaciones\baseball.gif');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    </style>
+    <script>
+function selectSport(sport) {
+    var sportInput = document.getElementById("sport");
+    sportInput.value = sport;
+
+    updateStatisticOptions();
+
+    var sportAnimation = document.getElementById("sport-animation");
+    if (sport === "baseball") {
+        sportAnimation.innerHTML = '<img src="https://media2.giphy.com/media/elP9qvgyy0VALeJs1l/giphy.gif?cid=ecf05e47xjz8fplmp5ivgho13hy8xpdjwyyqolf8k1wfjk29&ep=v1_gifs_related&rid=giphy.gif&ct=g" alt="Baseball Animation">';
+    } else if (sport === "nfl") {
+        sportAnimation.innerHTML = '<img src="https://example.com/animaciones/nfl.gif" alt="NFL Animation">';
+    } else if (sport === "ftmx") {
+        sportAnimation.innerHTML = '<img src="https://example.com/animaciones/soccer.gif" alt="Soccer Animation">';
+    }
+}
+
+        function showPredictions(statisticName, statisticPrediction) {
+            var predictionsTable = document.getElementById("predictions");
+            var statisticNameCell = document.getElementById("statistic-name");
+            var statisticPredictionCell = document.getElementById("statistic-prediction");
+
+            statisticNameCell.innerHTML = statisticName;
+            statisticPredictionCell.innerHTML = statisticPrediction;
+
+            predictionsTable.classList.remove("hidden");
+        }
+
+        function updateStatisticOptions() {
+            var sport = document.getElementById("sport").value;
+            var statisticSelect = document.getElementById("statistic");
+            statisticSelect.innerHTML = "";
+
+            var defaultOption = document.createElement("option");
+            defaultOption.text = "--Selecciona una estadística--";
+            defaultOption.value = "";
+            statisticSelect.add(defaultOption);
+
+            if (sport === "baseball") {
+                var options = ["AVG", "HR", "RBI"];
+                var labels = ["Promedio de bateo", "Home runs", "Carreras impulsadas"];
+            } else if (sport === "nfl") {
+                var options = ["Passing Yds", "TD"];
+                var labels = ["Yardas de pase", "Touchdowns"];
+            } else if (sport === "ftmx") {
+                var options = ["W Win", "L Loss", "D Draw"];
+                var labels = ["Victorias", "Derrotas", "Empates"];
+            } else {
+                return;
+            }
+
+            for (var i = 0; i < options.length; i++) {
+                var option = document.createElement("option");
+                option.text = labels[i];
+                option.value = options[i];
+                statisticSelect.add(option);
+            }
+
+            var statistic = document.getElementById("statistic").value;
+            var statisticName = labels[options.indexOf(statistic)];
+            var statisticPrediction = "10"; // Aquí debes reemplazar "10" con la predicción real
+
+            showPredictions(statisticName, statisticPrediction);
+        }
+    </script>
+</head>
+<body>
+    <div class="container animate__animated animate__fadeIn">
+        <h1>Predicción de estadísticas deportivas</h1>
+        <form action="/" method="post">
+            <h2>Selecciona un deporte:</h2>
+            <div class="sport-option animate__animated animate__bounceIn" onclick="selectSport('baseball')">
+                <i class="fas fa-baseball-ball"></i>
+                <p>Béisbol</p>
+            </div>
+            <div class="sport-option animate__animated animate__bounceIn" onclick="selectSport('nfl')">
+                <i class="fas fa-football-ball"></i>
+                <p>NFL</p>
+            </div>
+            <div class="sport-option animate__animated animate__bounceIn" onclick="selectSport('ftmx')">
+                <i class="fas fa-futbol"></i>
+                <p>Futbol</p>
+            </div>
+            <input type="hidden" name="sport" id="sport" value="">
+            <br><br>
+            <label for="statistic">Selecciona una estadística para predecir:</label>
+            <select name="statistic" id="statistic">
+                <option value="">--Selecciona una estadística--</option>
+            </select>
+            <br><br>
+            <input type="submit" value="Predecir">
+        </form>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        <div id="sport-animation"></div>
+    </div>
+    <script>
+        var sportAnimation = document.getElementById("sport-animation");
+        var baseballAnimation = document.createElement("img");
+        baseballAnimation.src = "animaciones/baseball.gif";
+        var nflAnimation = document.createElement("img");
+        nflAnimation.src = "animaciones/nfl.gif";
+        var futbolAnimation = document.createElement("img");
+        futbolAnimation.src = "animaciones/futbol.gif";
+        sportAnimation.appendChild(baseballAnimation);
+        sportAnimation.appendChild(nflAnimation);
+        sportAnimation.appendChild(futbolAnimation);
+    </script>
+</body>
+</html>
